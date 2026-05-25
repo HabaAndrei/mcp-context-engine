@@ -1,0 +1,15 @@
+[project]
+name = "context-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "alembic>=1.16.5",
+    "asyncpg>=0.31.0",
+    "dotenv>=0.9.9",
+    "fastmcp>=2.14.2",
+    "psycopg2-binary>=2.9.11",
+    "sqlalchemy>=2.0.43",
+]
