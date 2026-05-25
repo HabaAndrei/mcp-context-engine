@@ -272,7 +272,7 @@ async def remove_labels(issue_id: int, labels: Iterable[str]) -> int:
         )
 
     async with auto_session() as session:
-        labels = [l.strip() for l in labels if l.strip()]
+        labels = [i.strip() for i in labels if i.strip()]
         if not labels:
             return 0
 

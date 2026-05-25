@@ -4,6 +4,14 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import sys
+from pathlib import Path
+
+from database.db_client import DATABASE_URL
+from database.models.__utils__ import Base
+# Import all models to ensure they're registered with Base
+import database.models  # noqa: F401
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -17,14 +25,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from database.db_client import DATABASE_URL
-from database.models.__utils__ import Base
-# Import all models to ensure they're registered with Base
-import database.models  # noqa: F401
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 target_metadata = Base.metadata
 

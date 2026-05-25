@@ -5,7 +5,7 @@ Global key/value configuration (not linked to issues by foreign key).
 
 from __future__ import annotations
 
-from sqlalchemy import Column, String, Text, Integer
+from sqlalchemy import Column, String, Text
 
 from .__utils__ import Base
 
