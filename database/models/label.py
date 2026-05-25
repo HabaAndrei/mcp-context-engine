@@ -18,8 +18,6 @@ class Label(Base):
     )
     label = Column(String, primary_key=True)
 
-    __table_args__ = (
-        Index("idx_con_mcp_labels_label", "label"),
-    )
+    __table_args__ = (Index("idx_con_mcp_labels_label", "label"),)
 
     issue = relationship("Issue", back_populates="labels")

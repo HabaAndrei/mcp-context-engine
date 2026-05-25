@@ -1,10 +1,6 @@
 from mcp_engine import mcp
 from logger import log_error
-from database.services import (
-    add_dependency,
-    remove_dependency,
-    DEP_BLOCKS
-)
+from database.services import add_dependency, remove_dependency, DEP_BLOCKS
 
 
 @mcp.tool()
@@ -39,24 +35,25 @@ async def con_mcp_add_dependency(
         String representation of created dependency, or error if issues don't exist.
     """
     try:
-        return str(await add_dependency(
-            issue_id=issue_id,
-            depends_on_id=depends_on_id,
-            dep_type=dep_type,
-            created_by=created_by,
-            metadata=metadata,
-            thread_id=thread_id
-        ))
+        return str(
+            await add_dependency(
+                issue_id=issue_id,
+                depends_on_id=depends_on_id,
+                dep_type=dep_type,
+                created_by=created_by,
+                metadata=metadata,
+                thread_id=thread_id,
+            )
+        )
     except Exception as e:
-        log_error(f" adding dependency {issue_id} -> {depends_on_id} ({dep_type}): {type(e).__name__}: {e}")
+        log_error(
+            f" adding dependency {issue_id} -> {depends_on_id} ({dep_type}): {type(e).__name__}: {e}"
+        )
         return f"Error adding dependency: {type(e).__name__}: {e}"
 
 
 @mcp.tool()
-async def con_mcp_remove_dependency(
-    issue_id: int,
-    depends_on_id: int
-):
+async def con_mcp_remove_dependency(issue_id: int, depends_on_id: int):
     """Remove a dependency relationship between two issues.
 
     Removes the dependency edge from issue_id to depends_on_id regardless of type.
@@ -69,10 +66,11 @@ async def con_mcp_remove_dependency(
         True if dependency was removed, False if it didn't exist.
     """
     try:
-        return str(await remove_dependency(
-            issue_id=issue_id,
-            depends_on_id=depends_on_id
-        ))
+        return str(
+            await remove_dependency(issue_id=issue_id, depends_on_id=depends_on_id)
+        )
     except Exception as e:
-        log_error(f" removing dependency {issue_id} -> {depends_on_id}: {type(e).__name__}: {e}")
+        log_error(
+            f" removing dependency {issue_id} -> {depends_on_id}: {type(e).__name__}: {e}"
+        )
         return f"Error removing dependency: {type(e).__name__}: {e}"

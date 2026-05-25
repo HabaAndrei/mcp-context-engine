@@ -1,10 +1,6 @@
 from mcp_engine import mcp
 from logger import log_error
-from database.services import (
-    add_labels,
-    remove_labels,
-    set_labels
-)
+from database.services import add_labels, remove_labels, set_labels
 from typing import Iterable
 
 

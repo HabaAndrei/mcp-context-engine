@@ -1,8 +1,6 @@
 from mcp_engine import mcp
 from logger import log_error
-from database.services import (
-    add_comment
-)
+from database.services import add_comment
 
 
 @mcp.tool()

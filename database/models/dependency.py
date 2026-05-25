@@ -40,7 +40,12 @@ class Dependency(Base, TimestampMixin):
         Index("idx_con_mcp_dependencies_issue", "issue_id"),
         Index("idx_con_mcp_dependencies_depends_on", "depends_on_id"),
         Index("idx_con_mcp_dependencies_depends_on_type", "depends_on_id", "type"),
-        Index("idx_con_mcp_dependencies_depends_on_type_issue", "depends_on_id", "type", "issue_id"),
+        Index(
+            "idx_con_mcp_dependencies_depends_on_type_issue",
+            "depends_on_id",
+            "type",
+            "issue_id",
+        ),
     )
 
     issue = relationship(

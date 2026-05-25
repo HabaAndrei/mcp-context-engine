@@ -23,7 +23,7 @@ class EnvVars:
     """
 
     _instance = None  # Holds the single instance of the class
-    _lock = Lock()    # Thread lock to ensure thread-safe instantiation
+    _lock = Lock()  # Thread lock to ensure thread-safe instantiation
 
     def __new__(cls):
         """

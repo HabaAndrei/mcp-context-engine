@@ -8,7 +8,7 @@ from database.services import (
     update_issue_fields,
     claim_issue,
     close_issue,
-    IssueKwargs
+    IssueKwargs,
 )
 from typing import Literal
 
@@ -54,21 +54,23 @@ async def con_mcp_create_issue(
     """
 
     try:
-        return str(await create_issue(
-            title=title,
-            description=description,
-            acceptance_criteria=acceptance_criteria,
-            notes=notes,
-            status=status,
-            priority=priority,
-            issue_type=issue_type,
-            assignee=assignee,
-            estimated_minutes=estimated_minutes,
-            created_by=created_by,
-            pinned=pinned,
-            labels=labels,
-            dependencies=dependencies
-        ))
+        return str(
+            await create_issue(
+                title=title,
+                description=description,
+                acceptance_criteria=acceptance_criteria,
+                notes=notes,
+                status=status,
+                priority=priority,
+                issue_type=issue_type,
+                assignee=assignee,
+                estimated_minutes=estimated_minutes,
+                created_by=created_by,
+                pinned=pinned,
+                labels=labels,
+                dependencies=dependencies,
+            )
+        )
     except Exception as e:
         log_error(f" creating issue '{title}': {type(e).__name__}: {e}")
         return f"Error creating issue: {type(e).__name__}: {e}"
@@ -112,23 +114,27 @@ async def con_mcp_create_child_issue(
         dependency, or error message if parent doesn't exist.
     """
     try:
-        return str(await create_child_issue(
-            parent_id=parent_id,
-            title=title,
-            description=description,
-            acceptance_criteria=acceptance_criteria,
-            notes=notes,
-            status=status,
-            priority=priority,
-            issue_type=issue_type,
-            assignee=assignee,
-            estimated_minutes=estimated_minutes,
-            created_by=created_by,
-            pinned=pinned,
-            labels=labels,
-        ))
+        return str(
+            await create_child_issue(
+                parent_id=parent_id,
+                title=title,
+                description=description,
+                acceptance_criteria=acceptance_criteria,
+                notes=notes,
+                status=status,
+                priority=priority,
+                issue_type=issue_type,
+                assignee=assignee,
+                estimated_minutes=estimated_minutes,
+                created_by=created_by,
+                pinned=pinned,
+                labels=labels,
+            )
+        )
     except Exception as e:
-        log_error(f" creating child issue '{title}' under parent {parent_id}: {type(e).__name__}: {e}")
+        log_error(
+            f" creating child issue '{title}' under parent {parent_id}: {type(e).__name__}: {e}"
+        )
         return f"Error creating child issue: {type(e).__name__}: {e}"
 
 
@@ -178,12 +184,14 @@ async def con_mcp_create_epic_with_children(
         )
     """
     try:
-        return str(await create_epic_with_children(
-            epic_kwargs=epic_kwargs,
-            children_kwargs=children_kwargs,
-            epic_labels=epic_labels,
-            child_labels=child_labels,
-        ))
+        return str(
+            await create_epic_with_children(
+                epic_kwargs=epic_kwargs,
+                children_kwargs=children_kwargs,
+                epic_labels=epic_labels,
+                child_labels=child_labels,
+            )
+        )
     except Exception as e:
         log_error(f" creating epic with children: {type(e).__name__}: {e}")
         return f"Error creating epic with children: {type(e).__name__}: {e}"
@@ -224,18 +232,20 @@ async def con_mcp_update_issue_fields(
         String representation of updated issue, or error if issue doesn't exist.
     """
     try:
-        return str(await update_issue_fields(
-            issue_id=issue_id,
-            actor=actor,
-            status=status,
-            priority=priority,
-            title=title,
-            assignee=assignee,
-            description=description,
-            acceptance_criteria=acceptance_criteria,
-            notes=notes,
-            estimated_minutes=estimated_minutes,
-        ))
+        return str(
+            await update_issue_fields(
+                issue_id=issue_id,
+                actor=actor,
+                status=status,
+                priority=priority,
+                title=title,
+                assignee=assignee,
+                description=description,
+                acceptance_criteria=acceptance_criteria,
+                notes=notes,
+                estimated_minutes=estimated_minutes,
+            )
+        )
     except Exception as e:
         log_error(f" updating issue {issue_id}: {type(e).__name__}: {e}")
         return f"Error updating issue {issue_id}: {type(e).__name__}: {e}"
@@ -265,12 +275,14 @@ async def con_mcp_claim_issue(
         fail_if_claimed=True) or issue doesn't exist.
     """
     try:
-        return str(await claim_issue(
-            issue_id=issue_id,
-            actor=actor,
-            assignee=assignee,
-            fail_if_claimed=fail_if_claimed,
-        ))
+        return str(
+            await claim_issue(
+                issue_id=issue_id,
+                actor=actor,
+                assignee=assignee,
+                fail_if_claimed=fail_if_claimed,
+            )
+        )
     except Exception as e:
         log_error(f" claiming issue {issue_id} for {assignee}: {type(e).__name__}: {e}")
         return f"Error claiming issue {issue_id}: {type(e).__name__}: {e}"
@@ -300,12 +312,14 @@ async def con_mcp_close_issue(
         is pinned (when force=False).
     """
     try:
-        return str(await close_issue(
-            issue_id=issue_id,
-            actor=actor,
-            reason=reason,
-            force=force,
-        ))
+        return str(
+            await close_issue(
+                issue_id=issue_id,
+                actor=actor,
+                reason=reason,
+                force=force,
+            )
+        )
     except Exception as e:
         log_error(f" closing issue {issue_id}: {type(e).__name__}: {e}")
         return f"Error closing issue {issue_id}: {type(e).__name__}: {e}"

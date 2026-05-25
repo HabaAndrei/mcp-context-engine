@@ -9,6 +9,7 @@ from pathlib import Path
 
 from database.db_client import DATABASE_URL
 from database.models.__utils__ import Base
+
 # Import all models to ensure they're registered with Base
 import database.models  # noqa: F401
 
@@ -30,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 target_metadata = Base.metadata
 
+
 # Convert async database URL to sync version for Alembic
 def get_sync_url(async_url: str) -> str:
     """Convert async database URLs to sync versions for synchronous operations.
@@ -44,6 +46,7 @@ def get_sync_url(async_url: str) -> str:
         return async_url.replace("postgresql+asyncpg://", "postgresql://")
     else:
         return async_url
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

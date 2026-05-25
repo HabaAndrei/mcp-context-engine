@@ -1,8 +1,6 @@
 from mcp_engine import mcp
 from logger import log_error
-from database.services import (
-    add_event
-)
+from database.services import add_event
 
 
 @mcp.tool()
@@ -34,14 +32,18 @@ async def con_mcp_add_event(
         issue doesn't exist.
     """
     try:
-        return str(await add_event(
-            issue_id=issue_id,
-            event_type=event_type,
-            actor=actor,
-            old_value=old_value,
-            new_value=new_value,
-            comment=comment,
-        ))
+        return str(
+            await add_event(
+                issue_id=issue_id,
+                event_type=event_type,
+                actor=actor,
+                old_value=old_value,
+                new_value=new_value,
+                comment=comment,
+            )
+        )
     except Exception as e:
-        log_error(f" adding event '{event_type}' to issue {issue_id}: {type(e).__name__}: {e}")
+        log_error(
+            f" adding event '{event_type}' to issue {issue_id}: {type(e).__name__}: {e}"
+        )
         return f"Error adding event to issue {issue_id}: {type(e).__name__}: {e}"

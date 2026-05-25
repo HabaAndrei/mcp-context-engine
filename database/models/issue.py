@@ -37,7 +37,9 @@ class Issue(Base, TimestampMixin):
 
     __table_args__ = (
         CheckConstraint("length(title) <= 500", name="ck_con_mcp_issues_title_len"),
-        CheckConstraint("priority >= 0 AND priority <= 4", name="ck_con_mcp_issues_priority_range"),
+        CheckConstraint(
+            "priority >= 0 AND priority <= 4", name="ck_con_mcp_issues_priority_range"
+        ),
         Index("idx_con_mcp_issues_status", "status"),
         Index("idx_con_mcp_issues_priority", "priority"),
         Index("idx_con_mcp_issues_assignee", "assignee"),

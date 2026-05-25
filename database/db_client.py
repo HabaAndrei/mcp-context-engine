@@ -26,7 +26,9 @@ CON_MCP_SQLITE_PATH = env_vars.get("CON_MCP_SQLITE_PATH", "./data.db")
 if CON_MCP_DB_TYPE == "sqlite":
     DATABASE_URL = f"sqlite+aiosqlite:///{CON_MCP_SQLITE_PATH}"
 elif CON_MCP_DB_TYPE == "postgres":
-    DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DATABASE_URL = (
+        f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 else:
     log_error(" You have to add value for CON_MCP_DB_TYPE env var")
 
@@ -35,13 +37,13 @@ engine = create_async_engine(DATABASE_URL, echo=False)
 
 # Session factory for async operations
 AsyncSessionLocal = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+    bind=engine, class_=AsyncSession, expire_on_commit=False
 )
 
 # Global session context variable (thread-safe)
-_session_context: ContextVar[AsyncSession | None] = ContextVar("session_context", default=None)
+_session_context: ContextVar[AsyncSession | None] = ContextVar(
+    "session_context", default=None
+)
 
 
 def get_session() -> AsyncSession | None:
@@ -147,15 +149,10 @@ async def get_db():
             clear_session()
 
 
-
-
-
-
 # Scenario 1: Standalone call
 # await create_issue(...)
 # → auto_session() finds NO session in context
 # → creates its own session, commits immediately ✅
-
 
 
 # Scenario 2: Transaction control

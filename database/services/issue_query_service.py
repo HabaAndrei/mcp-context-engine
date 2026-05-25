@@ -45,7 +45,9 @@ class IssueDetails:
     parent: int | None
 
 
-async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> dict[str, Any]:
+async def get_issue_details(
+    issue_id: int, include_nested_deps: bool = True
+) -> dict[str, Any]:
     """Return IssueDetails for a given issue id.
 
     This is the DB-only equivalent of what `bd show <id>` needs.
@@ -72,11 +74,17 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
             raise ValueError(f"issue not found: {issue_id}")
 
         # Labels
-        result = await session.execute(select(Label.label).where(Label.issue_id == issue_id))
+        result = await session.execute(
+            select(Label.label).where(Label.issue_id == issue_id)
+        )
         labels = list(result.scalars())
 
         # Comments
-        result = await session.execute(select(Comment).where(Comment.issue_id == issue_id).order_by(Comment.created_at))
+        result = await session.execute(
+            select(Comment)
+            .where(Comment.issue_id == issue_id)
+            .order_by(Comment.created_at)
+        )
         comments = list(result.scalars())
 
         # Parent (via parent-child edge: child(issue_id) -> parent(depends_on_id))
@@ -89,22 +97,30 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
         parent = result.scalar()
 
         # Outgoing dependencies (dependencies)
-        result = await session.execute(select(Dependency).where(Dependency.issue_id == issue_id))
+        result = await session.execute(
+            select(Dependency).where(Dependency.issue_id == issue_id)
+        )
         dep_rows = list(result.scalars())
         dependencies: list[IssueWithDependencyMetadata] = []
         if dep_rows:
             dep_target_ids = [d.depends_on_id for d in dep_rows]
-            result = await session.execute(select(Issue).where(Issue.id.in_(dep_target_ids)))
+            result = await session.execute(
+                select(Issue).where(Issue.id.in_(dep_target_ids))
+            )
             targets = {i.id: i for i in result.scalars()}
             for d in dep_rows:
                 tgt = targets.get(d.depends_on_id)
                 if tgt is None:
                     # should not happen with FK, but keep robust
                     continue
-                dependencies.append(IssueWithDependencyMetadata(issue=tgt, dependency_type=d.type))
+                dependencies.append(
+                    IssueWithDependencyMetadata(issue=tgt, dependency_type=d.type)
+                )
 
         # Incoming dependencies (dependents)
-        result = await session.execute(select(Dependency).where(Dependency.depends_on_id == issue_id))
+        result = await session.execute(
+            select(Dependency).where(Dependency.depends_on_id == issue_id)
+        )
         incoming_rows = list(result.scalars())
         dependents: list[IssueWithDependencyMetadata] = []
         if incoming_rows:
@@ -115,12 +131,16 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
                 src = sources.get(d.issue_id)
                 if src is None:
                     continue
-                dependents.append(IssueWithDependencyMetadata(issue=src, dependency_type=d.type))
+                dependents.append(
+                    IssueWithDependencyMetadata(issue=src, dependency_type=d.type)
+                )
 
         # If requested, fetch nested dependency info for all dependents and dependencies
         nested_deps_map: dict[int, dict[str, Any]] = {}
         if include_nested_deps:
-            all_related_ids = [d.issue.id for d in dependencies] + [d.issue.id for d in dependents]
+            all_related_ids = [d.issue.id for d in dependencies] + [
+                d.issue.id for d in dependents
+            ]
             if all_related_ids:
                 # Fetch all dependencies for related issues
                 result = await session.execute(
@@ -130,7 +150,9 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
 
                 # Fetch all dependents for related issues
                 result = await session.execute(
-                    select(Dependency).where(Dependency.depends_on_id.in_(all_related_ids))
+                    select(Dependency).where(
+                        Dependency.depends_on_id.in_(all_related_ids)
+                    )
                 )
                 incoming = list(result.scalars())
 
@@ -144,19 +166,25 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
                 # Fetch all issues in one query
                 issue_map: dict[int, Issue] = {}
                 if all_dep_issue_ids:
-                    result = await session.execute(select(Issue).where(Issue.id.in_(all_dep_issue_ids)))
+                    result = await session.execute(
+                        select(Issue).where(Issue.id.in_(all_dep_issue_ids))
+                    )
                     issue_map = {i.id: i for i in result.scalars()}
 
                 # Build the nested dependency map
                 for related_id in all_related_ids:
                     related_deps = [d for d in outgoing if d.issue_id == related_id]
-                    related_incoming = [d for d in incoming if d.depends_on_id == related_id]
+                    related_incoming = [
+                        d for d in incoming if d.depends_on_id == related_id
+                    ]
 
                     nested_deps_map[related_id] = {
                         "dependencies": [
                             {
                                 "id": d.depends_on_id,
-                                "title": issue_map[d.depends_on_id].title if d.depends_on_id in issue_map else None,
+                                "title": issue_map[d.depends_on_id].title
+                                if d.depends_on_id in issue_map
+                                else None,
                                 "dependency_type": d.type,
                             }
                             for d in related_deps
@@ -164,7 +192,9 @@ async def get_issue_details(issue_id: int, include_nested_deps: bool = True) -> 
                         "dependents": [
                             {
                                 "id": d.issue_id,
-                                "title": issue_map[d.issue_id].title if d.issue_id in issue_map else None,
+                                "title": issue_map[d.issue_id].title
+                                if d.issue_id in issue_map
+                                else None,
                                 "dependency_type": d.type,
                             }
                             for d in related_incoming

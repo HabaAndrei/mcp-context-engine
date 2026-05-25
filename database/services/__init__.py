@@ -24,7 +24,7 @@ from .issue_service import (
     remove_labels,
     set_labels,
     update_issue_fields,
-    add_event
+    add_event,
 )
 
 from .issue_query_service import (

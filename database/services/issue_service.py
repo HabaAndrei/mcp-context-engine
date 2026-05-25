@@ -127,7 +127,9 @@ async def create_issue(
 
         if dependencies:
             for depends_on_id, dep_type in dependencies:
-                await add_dependency(issue.id, depends_on_id, dep_type=dep_type, created_by=created_by)
+                await add_dependency(
+                    issue.id, depends_on_id, dep_type=dep_type, created_by=created_by
+                )
 
         # small, useful event
         await add_event(
@@ -234,7 +236,9 @@ async def create_epic_with_children(
 
     created_children: list[dict] = []
     for child_kwargs in children_kwargs:
-        child = await create_child_issue(epic_issue["id"], **child_kwargs, labels=child_labels)
+        child = await create_child_issue(
+            epic_issue["id"], **child_kwargs, labels=child_labels
+        )
         created_children.append(child)
 
     return epic_issue, created_children
@@ -349,7 +353,9 @@ async def add_dependency(
 
 async def remove_dependency(issue_id: int, depends_on_id: int) -> bool:
     async with auto_session() as session:
-        dep = await session.get(Dependency, {"issue_id": issue_id, "depends_on_id": depends_on_id})
+        dep = await session.get(
+            Dependency, {"issue_id": issue_id, "depends_on_id": depends_on_id}
+        )
         if dep is None:
             return False
         await session.delete(dep)
@@ -459,7 +465,9 @@ async def claim_issue(
         if fail_if_claimed and issue.assignee and issue.assignee != assignee:
             raise ValueError(f"issue already claimed by {issue.assignee}")
 
-        return await update_issue_fields(issue_id, actor=actor, assignee=assignee, status=STATUS_IN_PROGRESS)
+        return await update_issue_fields(
+            issue_id, actor=actor, assignee=assignee, status=STATUS_IN_PROGRESS
+        )
 
 
 async def close_issue(

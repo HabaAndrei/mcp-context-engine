@@ -30,7 +30,11 @@ async def con_mcp_get_issue_details(issue_id: int, include_nested_deps: bool = T
         Returns error message if issue doesn't exist.
     """
     try:
-        return str(await get_issue_details(issue_id=issue_id, include_nested_deps=include_nested_deps))
+        return str(
+            await get_issue_details(
+                issue_id=issue_id, include_nested_deps=include_nested_deps
+            )
+        )
     except Exception as e:
         log_error(f" getting issue details for {issue_id}: {type(e).__name__}: {e}")
         return f"Error getting issue details for {issue_id}: {type(e).__name__}: {e}"
