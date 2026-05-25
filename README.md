@@ -324,6 +324,18 @@ The project uses a context-based session management system:
 - **`session_scope()`**: Manual session control with transaction management
 - **`get_session()`**: Get current session from context
 
+### Code Quality with Ruff
+
+Lint the project:
+```bash
+uv run ruff check
+```
+
+Format the project:
+```bash
+uv run ruff format
+```
+
 ### Branch Naming Convention
 
 When creating a new branch, follow this naming format:
