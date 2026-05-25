@@ -1,0 +1,68 @@
+"""Service layer for beads-like operations using SQLAlchemy models."""
+
+from .issue_service import (
+    IssueKwargs,
+    STATUS_BLOCKED,
+    STATUS_CLOSED,
+    STATUS_DEFERRED,
+    STATUS_IN_PROGRESS,
+    STATUS_OPEN,
+    DEP_BLOCKS,
+    DEP_DUPLICATES,
+    DEP_PARENT_CHILD,
+    DEP_RELATED,
+    DEP_SUPERSEDES,
+    add_comment,
+    add_dependency,
+    add_labels,
+    claim_issue,
+    close_issue,
+    create_child_issue,
+    create_epic_with_children,
+    create_issue,
+    remove_dependency,
+    remove_labels,
+    set_labels,
+    update_issue_fields,
+    add_event
+)
+
+from .issue_query_service import (
+    IssueDetails,
+    IssueWithDependencyMetadata,
+    get_issue_details,
+    issue_details_to_dict,
+)
+
+__all__ = [
+    # issue_service exports
+    "IssueKwargs",
+    "STATUS_OPEN",
+    "STATUS_IN_PROGRESS",
+    "STATUS_BLOCKED",
+    "STATUS_DEFERRED",
+    "STATUS_CLOSED",
+    "DEP_BLOCKS",
+    "DEP_PARENT_CHILD",
+    "DEP_RELATED",
+    "DEP_DUPLICATES",
+    "DEP_SUPERSEDES",
+    "create_issue",
+    "create_child_issue",
+    "create_epic_with_children",
+    "add_labels",
+    "remove_labels",
+    "set_labels",
+    "add_dependency",
+    "remove_dependency",
+    "add_comment",
+    "update_issue_fields",
+    "claim_issue",
+    "close_issue",
+    "add_event",
+    # issue_query_service exports
+    "IssueDetails",
+    "IssueWithDependencyMetadata",
+    "get_issue_details",
+    "issue_details_to_dict",
+]
