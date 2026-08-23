@@ -43,13 +43,13 @@ sequenceDiagram
     User->>AI: "Build the authentication system"
     AI->>MCP: con_mcp_create_epic_with_children(...)
     MCP->>DB: one transaction: epic + children + edges
-    AI->>MCP: con_mcp_claim_issue(#35;12)
-    AI->>MCP: con_mcp_close_issue(#35;12, "Completed")
+    AI->>MCP: con_mcp_claim_issue(issue 12)
+    AI->>MCP: con_mcp_close_issue(issue 12, "Completed")
     Note over User,AI: session ends, context is gone
     User->>AI: "Where were we?" (new session)
     AI->>MCP: con_mcp_get_ready_work()
     MCP->>DB: open issues with no unfinished blockers
-    MCP-->>AI: #35;13 and #35;15 are startable; #35;14 waits on #35;13
+    MCP-->>AI: issues 13 and 15 are startable, 14 waits on 13
     AI-->>User: exact state, nothing forgotten
 ```
 
