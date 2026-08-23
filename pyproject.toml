@@ -1,0 +1,41 @@
+[project]
+name = "context-mcp"
+version = "0.2.0"
+description = "MCP server that gives AI assistants a persistent context engine: task, epic and dependency tracking in SQLite/PostgreSQL so agents keep perfect state across tool calls and sessions"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.13"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "alembic>=1.16.5",
+    "asyncpg>=0.31.0",
+    "fastmcp>=2.14.2",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.0.1",
+    "sqlalchemy>=2.0.43",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.15.14",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+# The project is run from its checkout rather than installed, so put the repo
+# root on sys.path; without this `uv run pytest` cannot import `database`.
+pythonpath = ["."]
+addopts = "-q"
+markers = [
+    "integration: spawns a real server process; slower than the rest",
+]
+
+[tool.ruff]
+target-version = "py313"
+# Ruff normally skips .venv via .gitignore; naming it explicitly keeps the
+# lint honest when run somewhere without git metadata, such as a CI cache
+# restore or an exported archive.
+exclude = [".venv", "alembic/versions"]

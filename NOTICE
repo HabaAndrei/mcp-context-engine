@@ -1,0 +1,58 @@
+Context MCP (mcp-context-engine)
+Copyright (c) 2026 Andrei Haba
+Licensed under the MIT License. See LICENSE.
+
+--------------------------------------------------------------------------
+Design attribution
+--------------------------------------------------------------------------
+
+The idea this project builds on -- giving a coding agent an external,
+dependency-aware issue graph so it keeps its bearings across sessions -- comes
+from Beads ("bd"), by Steve Yegge and the Beads Contributors:
+
+    https://github.com/steveyegge/beads
+    Copyright (c) 2025 Beads Contributors
+    MIT License
+
+Several of this project's user-visible concepts were shaped by Beads: modelling
+epics, tasks and subtasks as one issue kind distinguished by a type field;
+expressing hierarchy as a parent-child edge in the dependency graph rather than
+a column; the vocabulary of edge types (blocks, parent-child, related,
+duplicates, supersedes); and the notion of "ready work" as the set of open
+issues with no unfinished blockers.
+
+This is an independent implementation, not a port. Beads is written in Go and
+is backed by Dolt; this project is written in Python against SQLAlchemy with
+SQLite or PostgreSQL, and exposes its functionality as MCP tools rather than a
+CLI. The schema, service layer, query strategies, validation rules, error
+types, and tests were designed and written for this codebase. No Beads source
+code was copied.
+
+Because no Beads code is included here, the MIT notice above is reproduced as
+attribution rather than to satisfy a redistribution obligation. It is included
+because the debt is real and worth stating plainly.
+
+--------------------------------------------------------------------------
+Third-party dependencies
+--------------------------------------------------------------------------
+
+This project depends on the following packages, each under its own license.
+Installing it will retrieve them; their notices are distributed with the
+packages themselves.
+
+    fastmcp          Apache-2.0
+    sqlalchemy       MIT
+    alembic          MIT
+    aiosqlite        MIT
+    asyncpg          Apache-2.0
+    psycopg2-binary  LGPL-3.0-or-later (with exceptions)
+    python-dotenv    BSD-3-Clause
+    pytest           MIT
+    pytest-asyncio   Apache-2.0
+    ruff             MIT
+
+Note on psycopg2-binary: it is LGPL-licensed and used here only as an
+unmodified, separately-installed dependency for PostgreSQL connectivity. It is
+not linked into or redistributed as part of this source distribution. Projects
+that bundle or redistribute binaries should confirm this arrangement suits
+their distribution model.

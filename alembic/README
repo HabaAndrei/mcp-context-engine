@@ -1,0 +1,23 @@
+Generic single-database configuration.
+
+### Migration Commands
+
+```bash
+# Run all pending migrations
+uv run alembic upgrade head
+
+# Create a new migration
+uv run alembic revision --autogenerate -m "Description of changes"
+
+# Rollback to previous migration
+uv run alembic downgrade -1
+
+# Show current migration status
+uv run alembic current
+
+# Show migration history
+uv run alembic history
+
+# Rollback to specific revision
+uv run alembic downgrade <revision_id>
+```
